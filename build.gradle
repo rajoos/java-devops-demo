@@ -1,0 +1,80 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.3.RELEASE")
+    }
+}
+plugins {
+  id "org.sonarqube" version "2.4"
+}
+
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+apply plugin: 'maven-publish'
+apply plugin: 'jacoco'
+apply plugin: 'maven'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile 'com.google.code.findbugs:jsr305:3.0.2'
+    compile 'org.springframework.boot:spring-boot-starter-web:1.5.3.RELEASE'
+    compile 'org.codehaus.groovy:groovy-all:2.3.7'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+    compile("io.springfox:springfox-swagger2:2.3.1")
+    compile("io.springfox:springfox-swagger-ui:2.3.1")
+    compile 'io.swagger:swagger-annotations:1.5.7'
+
+    compile 'joda-time:joda-time:2.9.2'
+    compile 'org.trimou:trimou-core:1.8.0.Final'
+
+    testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
+    }
+}
+
+war {
+    baseName = 'java-devops-demo'
+}
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId 'devops-demo'
+            artifactId 'java-devops-demo'
+            version version
+            from components.web
+        }
+    }
+    repositories {
+        maven {
+            credentials {
+                username "${artifactory_user}"
+                password "${artifactory_password}"
+            }
+            url "${artifactory_contextUrl}/${artifactory_repo}"
+        }
+    }
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.1'
+}
+
+test {
+    ignoreFailures = true
+}
