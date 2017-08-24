@@ -20,7 +20,7 @@ class JDopsController {
       List jDopsToolList = new ArrayList<JDopsTool>();
       jDopsToolList.add(new JDopsTool("1","Jira","Collaboration","Jira will be primarily used for planning and tracking",true));
       jDopsToolList.add(new JDopsTool("2","Bamboo","CI","",true));
-      jDopsToolList.add(new JDopsTool("3","Jenkins","CI","",false));
+      jDopsToolList.add(new JDopsTool("3","Jenkins","CI","",true));
       jDopsToolList.add(new JDopsTool("4","BitBucket","SCM","",true));
       jDopsToolList.add(new JDopsTool("5","SonarQube","Static Code Analysis","",true));
       jDopsToolList.add(new JDopsTool("6","Gradle-TEST","Build Tool","Gradle or Maven can be used",true));
